@@ -17,7 +17,6 @@ def find_max_occurred_alphabet(string):
         maxIndex = i
 
     return chr(maxIndex + ord('a'))
-ㅁ
 
 result = find_max_occurred_alphabet
 print("정답 = i 현재 풀이 값 =", result("hello my name is dingcodingco"))
