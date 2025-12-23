@@ -4,8 +4,8 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="6fa4e6ff-713e-48a1-a6a9-3f091ebf001a" name="Changes" comment="1주차 - 알고리즘과 친해지기(2)">
-      <change afterPath="$PROJECT_DIR$/1st_week/01_09.py" afterDir="false" />
+    <list default="true" id="6fa4e6ff-713e-48a1-a6a9-3f091ebf001a" name="Changes" comment="1주차 - 1-11-1 숙제">
+      <change afterPath="$PROJECT_DIR$/1st_week/01_11_02.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
@@ -27,6 +27,9 @@
   &quot;associatedIndex&quot;: 1
 }</component>
   <component name="ProjectId" id="36vplfud5J2qnNclYgShhoJfgHF" />
+  <component name="ProjectLevelVcsManager">
+    <ConfirmationsSetting value="2" id="Add" />
+  </component>
   <component name="ProjectViewState">
     <option name="hideEmptyMiddlePackages" value="true" />
     <option name="showLibraryContents" value="true" />
@@ -36,6 +39,9 @@
     "ModuleVcsDetector.initialDetectionPerformed": "true",
     "Python.01_01_find_max_occurred_alphabet.executor": "Run",
     "Python.01_09.executor": "Run",
+    "Python.01_10.executor": "Run",
+    "Python.01_11_01.executor": "Run",
+    "Python.01_11_02.executor": "Run",
     "RunOnceActivity.ShowReadmeOnStart": "true",
     "RunOnceActivity.TerminalTabsStorage.copyFrom.TerminalArrangementManager.252": "true",
     "RunOnceActivity.git.unshallow": "true",
@@ -90,7 +96,23 @@
       <option name="project" value="LOCAL" />
       <updated>1765899860203</updated>
     </task>
-    <option name="localTasksCounter" value="5" />
+    <task id="LOCAL-00005" summary="1주차 - 알고리즘 더 풀어보기(1)">
+      <option name="closed" value="true" />
+      <created>1765982432741</created>
+      <option name="number" value="00005" />
+      <option name="presentableId" value="LOCAL-00005" />
+      <option name="project" value="LOCAL" />
+      <updated>1765982432741</updated>
+    </task>
+    <task id="LOCAL-00006" summary="1주차 - 1-11-1 숙제">
+      <option name="closed" value="true" />
+      <created>1766416420340</created>
+      <option name="number" value="00006" />
+      <option name="presentableId" value="LOCAL-00006" />
+      <option name="project" value="LOCAL" />
+      <updated>1766416420340</updated>
+    </task>
+    <option name="localTasksCounter" value="7" />
     <servers />
   </component>
   <component name="Vcs.Log.Tabs.Properties">
@@ -106,7 +128,9 @@
   </component>
   <component name="VcsManagerConfiguration">
     <MESSAGE value="1주차 - 알고리즘과 친해지기(2)" />
-    <option name="LAST_COMMIT_MESSAGE" value="1주차 - 알고리즘과 친해지기(2)" />
+    <MESSAGE value="1주차 - 알고리즘 더 풀어보기(1)" />
+    <MESSAGE value="1주차 - 1-11-1 숙제" />
+    <option name="LAST_COMMIT_MESSAGE" value="1주차 - 1-11-1 숙제" />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>
