@@ -4,8 +4,8 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="6fa4e6ff-713e-48a1-a6a9-3f091ebf001a" name="Changes" comment="1주차 - 1-11-1 숙제">
-      <change afterPath="$PROJECT_DIR$/1st_week/01_11_02.py" afterDir="false" />
+    <list default="true" id="6fa4e6ff-713e-48a1-a6a9-3f091ebf001a" name="Changes" comment="1주차 - 2-6">
+      <change afterPath="$PROJECT_DIR$/2st_week/boj_1158.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
@@ -42,6 +42,8 @@
     "Python.01_10.executor": "Run",
     "Python.01_11_01.executor": "Run",
     "Python.01_11_02.executor": "Run",
+    "Python.02_06.executor": "Run",
+    "Python.boj_1158.executor": "Run",
     "RunOnceActivity.ShowReadmeOnStart": "true",
     "RunOnceActivity.TerminalTabsStorage.copyFrom.TerminalArrangementManager.252": "true",
     "RunOnceActivity.git.unshallow": "true",
@@ -112,7 +114,23 @@
       <option name="project" value="LOCAL" />
       <updated>1766416420340</updated>
     </task>
-    <option name="localTasksCounter" value="7" />
+    <task id="LOCAL-00007" summary="1주차 - 1-11-2 숙제">
+      <option name="closed" value="true" />
+      <created>1766502226967</created>
+      <option name="number" value="00007" />
+      <option name="presentableId" value="LOCAL-00007" />
+      <option name="project" value="LOCAL" />
+      <updated>1766502226967</updated>
+    </task>
+    <task id="LOCAL-00008" summary="1주차 - 2-6">
+      <option name="closed" value="true" />
+      <created>1767278380856</created>
+      <option name="number" value="00008" />
+      <option name="presentableId" value="LOCAL-00008" />
+      <option name="project" value="LOCAL" />
+      <updated>1767278380856</updated>
+    </task>
+    <option name="localTasksCounter" value="9" />
     <servers />
   </component>
   <component name="Vcs.Log.Tabs.Properties">
@@ -130,7 +148,9 @@
     <MESSAGE value="1주차 - 알고리즘과 친해지기(2)" />
     <MESSAGE value="1주차 - 알고리즘 더 풀어보기(1)" />
     <MESSAGE value="1주차 - 1-11-1 숙제" />
-    <option name="LAST_COMMIT_MESSAGE" value="1주차 - 1-11-1 숙제" />
+    <MESSAGE value="1주차 - 1-11-2 숙제" />
+    <MESSAGE value="1주차 - 2-6" />
+    <option name="LAST_COMMIT_MESSAGE" value="1주차 - 2-6" />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>
