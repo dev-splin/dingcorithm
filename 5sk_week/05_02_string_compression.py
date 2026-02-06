@@ -2,26 +2,26 @@ input = "abcabcabcabcdededededede"
 
 
 def string_compression(string):
-    result = 2000
+    n = len(string)
+    result = n
 
-    for i in range (1, len(string) + 1):
-        tmp_string = string
-        count = 0
-        prev = ""
+    for split_size in range (1, n // 2 + 1):
+        split_strings = [
+            string[i:i+split_size ] for i in range(0, n, split_size)
+        ]
+        count = 1
         tmp_result = ""
 
-        while tmp_string:
-            split_string = tmp_string[0:i]
-            tmp_string = tmp_string[i:]
+        for i in range(len(split_strings) - 1):
+            cur, next = split_strings[i], split_strings[i+1]
 
-            if split_string == prev:
+            if cur == next:
                 count += 1
-            elif split_string != prev:
-                tmp_result += str(count) + prev if count > 1 else prev
-                prev = split_string
+            else:
+                tmp_result += f"{count}{cur}" if count > 1 else cur
                 count = 1
 
-        tmp_result += str(count) + prev if count > 1 else prev
+        tmp_result += f"{count}{split_strings[-1]}" if count > 1 else split_strings[-1]
 
         result = min(len(tmp_result), result)
 
