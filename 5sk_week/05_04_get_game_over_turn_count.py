@@ -23,15 +23,8 @@ dr = [1, -1, 0, 0]
 MAX_TURN = 1000
 EXIT_COUNT = 4
 
-def in_range(horse_location_and_directions, col, row):
-    col_length = len(horse_location_and_directions)
-    row_length = len(horse_location_and_directions[0])
-
-    return 0 <= col < col_length and 0 <= row < row_length
-
-def remove_horse_seq(seq_dic, horse_num, col, row):
-    index = seq_dic[(col, row)].index(horse_num)
-    seq_dic[(col, row)].pop(index)
+def in_range(n, col, row):
+    return 0 <= col < n and 0 <= row < n
 
 def set_horse_seq(seq_dic, horse_num, col, row):
     if (col, row) in seq_dic:
@@ -39,49 +32,53 @@ def set_horse_seq(seq_dic, horse_num, col, row):
     else:
         seq_dic[(col, row)] = [horse_num]
 
-def move(game_map, horse_location_and_directions, seq_dic, horse_num):
-    col, row, pos = horse_location_and_directions[horse_num]
-    next_col, next_row, new_pos = col + dc[horse_num], row + dr[horse_num], pos
-
-    index = seq_dic[(col, row)].index(horse_num)
-    move_list = seq_dic[(col, row)][index:]
-
-    if not in_range(horse_location_and_directions, next_col, next_row) or game_map[next_col][next_row] == 2:
-        # 범위 바깥을 넘어가거나 파란색
-        next_col, next_row = col - dc[horse_num], row - dr[horse_num]
-        new_pos = pos + 1 if pos == 0 or pos == 3 else pos - 1
-    elif in_range(horse_location_and_directions, next_col, next_row) and game_map[next_col][next_row] == 1:
-        # 범위 내이면서 빨간색
-        move_list.reverse()
-
-    for move_horse_num in move_list:
-        # 기존 순서 리스트에서 데이터 제거 후 다음 순서 리스트에 기록
-        remove_horse_seq(seq_dic, move_horse_num, col, row)
-        set_horse_seq(seq_dic, move_horse_num, next_col, next_row)
-        # 행/렬/위치 기록
-        horse_location_and_directions[move_horse_num] = [next_col, next_row, new_pos]
+def reverse_dir(dir):
+    return dir + 1 if dir % 2 == 0 else dir - 1
 
 def get_game_over_turn_count(horse_count, game_map, horse_location_and_directions):
-    turn = 0
+    turn = 1
     seq_dic = {} # 순서 리스트 딕셔너리(key: 행렬)®
+    n = len(horse_location_and_directions)
 
     for i in range(horse_count):
-        [col, row, _] = horse_location_and_directions[i]
+        col, row, dir = horse_location_and_directions[i]
         set_horse_seq(seq_dic, i, col, row)
 
     while turn <= 1000:
-        # 결과 확인
-        for dic in seq_dic:
-            if len(seq_dic[dic]) >= EXIT_COUNT:
-                return turn
-
-        # 이동 처리
         for i in range(horse_count):
-            move(game_map, horse_location_and_directions, seq_dic, i)
+            col, row, dir = horse_location_and_directions[i]
+            new_col, new_row, new_dir = col + dc[dir], row + dr[dir], dir
+
+            if not in_range(n, new_col, new_row) or game_map[new_col][new_row] == 2:
+                # 범위 바깥을 넘어가거나 파란색
+                new_dir = reverse_dir(new_dir)
+                new_col, new_row = col + dc[new_dir], row + dr[new_dir]
+                horse_location_and_directions[i][2] = new_dir
+
+                # 바꾼 방향도 파란색인 경우
+                if not in_range(n, new_col, new_row) or game_map[new_col][new_row] == 2:
+                    continue
+
+            index = seq_dic[(col, row)].index(i)
+            move_list = seq_dic[(col, row)][index:]
+            seq_dic[(col, row)] = seq_dic[(col, row)][:index]
+
+            if game_map[new_col][new_row] == 1:
+                move_list.reverse()
+
+            for move_horse_num in move_list:
+                set_horse_seq(seq_dic, move_horse_num, new_col, new_row)
+                # 행/렬/방향 기록
+                horse_location_and_directions[move_horse_num][0], horse_location_and_directions[move_horse_num][1] = new_col, new_row
+
+            # 결과 확인
+            for dic in seq_dic:
+                if len(seq_dic[dic]) >= EXIT_COUNT:
+                    return turn
 
         turn += 1
 
-    return -1 if turn > 1000 else turn
+    return -1
 
 
 print(get_game_over_turn_count(k, chess_map, start_horse_location_and_directions))  # 2가 반환 되어야합니다
