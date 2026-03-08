@@ -1,28 +1,23 @@
 def solution(board, moves):
-    n = len(board)
-    convert_board = [[] for i in range(n)]
-    # 각 열에 있는 데이터들을 새로운 2차원 배열의 행으로 변환
-    for i in range(n):
-        for j in range(n-1, -1, -1):
-            if board[j][i] != 0:
-                convert_board[i].append(board[j][i])
-
     answer = 0
     basket = []
     # moves를 순회하며 바구니에 담음
     for move in moves:
         index = move - 1
-        # 데이터가 없음(빈칸)이면 스킵
-        if (len(convert_board[index]) == 0):
-            continue
 
-        doll = convert_board[index].pop()
-        basket.append(doll)
-        # 2개 이상이면 이전 데이터와 비교
-        if (len(basket) >= 2 and basket[-1] == basket[-2]):
-            answer += 2
-            basket.pop()
-            basket.pop()
+        # 해당 열(move)에 인형을 넣고 같은 번호가 겹치면 제거(+ answer 값 추가)
+        for row in board:
+            if row[index] == 0:
+                continue
+
+            basket.append(row[index])
+            row[index] = 0
+            # 2개 이상이면 이전 데이터와 비교
+            if len(basket) >= 2 and basket[-1] == basket[-2]:
+                answer += 2
+                basket = basket[:-2]
+
+            break
 
     return answer
 
