@@ -19,16 +19,68 @@
 # 위는 아니었고...
 # 결국 처리량 계산은 로그가 시작해야 이루어질 수 있다.
 # 각 로그들을 순회하면서 각 로그들의 시작 시간부터 1초, 끝나는 시간 부터 1초를 계산해서 다른 로그들이 포함되는지의 여부를 확인한다.
+def plusTime(time):
+    h, m, s = time
 
-# 시작 시간 계산 함수
-def getStartTime(response, time):
+    s = s + 1
+    if s >= 60:
+        s %= 60
+        m += 1
+
+    if m >= 60:
+        m = 0
+        h += 1
+
+    if h >= 24:
+        return False
+
+    return [h, m, s]
 
 
-    return 0
+def splitTime(time):
+    h, m, s = time.split(":")
 
+    return [int(h), int(m), float(s)]
 
 def solution(lines):
     answer = 0
+
+    log_times = []
+    # 시작 시간, 응답 시간 시간 log 구성
+    for line in lines:
+        date, response, run_time = line.split(" ")
+        res_h, res_m, res_s = splitTime(response)
+
+        run_time = float(run_time.replace("s", ""))
+        # 9/15로 고정
+        date = 15
+        # 응답 시간에서 실행 시간을 뺌
+        start_date, start_h, start_m, start_s = 15, res_h, res_m, res_s
+        start_s = start_s - run_time
+
+        # 초 계산
+        if start_s < 0:
+            start_m -= 1
+            start_s = 1 + start_s
+
+        # 분 계산
+        if start_m < 0:
+            start_h -= 1
+            start_m = 59
+
+        # 시간 계산
+        if start_h < 0:
+            start_h = 23
+            start_date = 14
+
+        log_times.append([(start_date, start_h, start_m, start_s), (date, res_h, res_m, res_s)])
+
+    for log_time in log_times:
+        start, end = log_time
+
+
+
+
     return answer
 
 print("정답 = 1 / 현재 풀이 값 = ", solution([
