@@ -20,114 +20,46 @@
 // 결국 처리량 계산은 로그가 시작해야 이루어질 수 있다.
 // 각 로그들을 순회하면서 각 로그들의 시작 시간부터 1초, 끝나는 시간 부터 1초를 계산해서 다른 로그들이 포함되는지의 여부를 확인한다.
 
-function plusDateTime(dateTime) {
-  let [date, h, m, s] = dateTime;
+function checkCount(logTimes, startMs, endMs) {
+  let count = 0
 
-  s = Number((s + 0.999).toFixed(3));
-  if (s >= 60) {
-    s = (s % 60).toFixed(3);
-    m += 1;
-  }
-
-  if (m >= 60) {
-    m = 0;
-    h += 1;
-  }
-
-  if (h >= 24) {
-    h = 23;
-    date += 1
-  }
-
-  return [date, h, m, s];
-}
-
-function minusDateTime(dateTime, minus_second) {
-  let [date, h, m, s] = dateTime;
-
-  s = Number((s - minus_second).toFixed(3));
-    // 초 계산
-    if (s < 0) {
-      m -= 1;
-      s = Number((60 + s).toFixed(3));
+  for (const [checkStartMs, checkResponseMs] of logTimes) {
+    if (startMs <= checkResponseMs && endMs > checkStartMs) {
+      count += 1;
     }
+  } 
 
-    // 분 계산
-    if (m < 0) {
-      h -= 1;
-      m = 59;
-    }
-
-    // 시간 계산
-    if (h < 0) {
-      h = 23;
-      date -= 1;
-    }
-
-  return [date, h, m, s];
-}
-
-function splitTime(time) {
-  const [h, m, s] = time.split(":");
-  return [Number(h), Number(m), Number(s)];
-}
-
-function convertDateTimeToString(dateTime) {
-  const [d, h, m, s] = dateTime;
-  const [pure_second, ms] = s.toString().split(".");
-
-  const hour = h.toString().padStart(2, "0");
-  const minute = m.toString().padStart(2, "0");
-  const second = pure_second.toString().padStart(2, "0");
-  const milliSecond = ms ? `.${ms.toString().padStart(3, "0")}` : "";
-
-  return `${d}:${hour}:${minute}:${second}${milliSecond}`;
+  return count;
 }
 
 function solution(lines) {
   let answer = 0;
 
   const logTimes = [];
-  // 시작 시간, 응답 시간 시간 log 구성
+  // ms로 변환 후 시작 시간, 응답 시간 시간 log 구성
   for (const line of lines) {
-    const [date, response, runTimeStr] = line.split(" ");
-    const onlyDate = date.split("-")[2]
-    const responseTime = splitTime(response);
+    const [_, response, runTimeStr] = line.split(" ");
+    
+    let responseMs = 0
+    const [h, m, s] = response.split(":");
+    responseMs += parseFloat(s) * 1000;
+    responseMs += parseInt(m) * 60 * 1000;
+    responseMs += parseInt(h) * 60 * 60 * 1000;
 
-    const runTime = parseFloat(runTimeStr.replace("s", ""));
+    const runTime = runTimeStr.replace("s", "");
+    const runTimeMs = parseFloat(runTime) * 1000;
 
-    const startDateTime = minusDateTime([onlyDate, ...responseTime], runTime);
+    const startMs = responseMs - runTimeMs + 1;
 
-    logTimes.push([startDateTime, [onlyDate, ...responseTime]]);
+    logTimes.push([startMs, responseMs])
   }
 
-  for (let i = 0 ; i < logTimes.length ; ++i) {
-    let curMax = 0
+  for (const [startMs, responseMs] of logTimes) {
+    const startEndMs = startMs + 1000;
+    const responseEndMs = responseMs + 1000;
 
-    const [start, end] = logTimes[i];
-    const standardStart = plusDateTime(start);
-    const standardEnd = plusDateTime(end);
-
-    const stringStart = convertDateTimeToString(start);
-    const stringEnd = convertDateTimeToString(end);
-    const stringStandardStart = convertDateTimeToString(standardStart);
-    const stringStandardEnd = convertDateTimeToString(standardEnd);
-
-    for (let j = 0 ; j < logTimes.length ; ++j) {
-      const [diffStart, diffEnd] = logTimes[j];
-
-      const stringDiffStart = convertDateTimeToString(diffStart);
-      const stringDiffEnd = convertDateTimeToString(diffEnd);
-
-      if ((stringStart <= stringDiffStart && stringDiffStart <= stringStandardStart)
-          || (stringStart <= stringDiffEnd && stringDiffEnd <= stringStandardStart)
-          || (stringStart >= stringDiffStart && stringStandardStart <= stringDiffEnd) ) {
-        curMax += 1
-      }
-    }
-
-    answer = Math.max(answer, curMax);
-  }
+    answer = Math.max(answer, checkCount(logTimes, startMs, startEndMs), checkCount(logTimes, responseMs, responseEndMs));
+  }   
 
   return answer;
 }
