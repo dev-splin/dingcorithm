@@ -29,33 +29,59 @@ function getQueryList(querys) {
     return queryList;
 }
 
+function makeKey([skill, job, career, food]) {
+    return `${skill}${job}${career}${food}`;
+}
+
+function addScore(map, key, value) {
+    const scores = map.has(key) ? map.get(key) : [];
+    scores.push(value);
+    map.set(key, scores);
+}
+
+function mapSetting(map, infoList) {
+    for (const info of infoList) {
+        const score = info[4];
+
+        let key = makeKey(info);
+        const value = Number(score);
+
+        addScore(map, key, value);
+
+        // 상관없음(-) 조건에도 점수를 넣어줌
+        for (let i = 0 ; i < info.length - 1 ; ++i) {
+            if (info[i] === "-") {
+                continue;
+            }
+
+            const tmpInfo = [...info];
+            tmpInfo[i] = "-";
+            key = makeKey(tmpInfo);
+            addScore(map, key, value);
+        }
+    }
+
+    map.forEach((value, key) => {
+        map.set(key, [...value].sort((a,b) => a - b));
+    })
+}
+
 function solution(info, query) {
     var answer = [];
 
     const infoList = getInfoList(info);
     const queryList = getQueryList(query);
 
-    for (const [skill, job, career, food, score] of queryList) {
-        let count = 0
-        for (const [infoSkill, infoJob, infoCareer, infoFood, infoScore] of infoList) {
-            if (score > infoScore) {
-                continue;
-            }
-            if (skill !== "-" && infoSkill !== skill) {
-                continue;
-            }
-            if (job !== "-" && infoJob !== job) {
-                continue;
-            }
-            if (career !== "-" && infoCareer !== career) {
-                continue;
-            }
-            if (food !== "-" && infoFood !== food) {
-                continue;
-            }
+    const map = new Map();
+    mapSetting(map, infoList);
 
-            count += 1;
-        }
+    for (const query of queryList) {
+        let count = 0
+        const queryScore = query[4];
+        const key = makeKey(query);
+
+        const infoScores = map.get(key);
+
 
         answer.push(count);
     }
