@@ -33,37 +33,42 @@ function makeKey([skill, job, career, food]) {
     return `${skill}${job}${career}${food}`;
 }
 
-function addScore(map, key, value) {
-    const scores = map.has(key) ? map.get(key) : [];
-    scores.push(value);
-    map.set(key, scores);
+function mapSetting({map, remainInfos, keyInfo, score}) {
+//   console.log('map, remainInfos, keyInfo, score', map, remainInfos, keyInfo, score);
+    if (remainInfos.length === 0) {
+        let key = makeKey(keyInfo);
+        const scores = map.has(key) ? map.get(key) : [];
+        scores.push(score);
+        map.set(key, scores);
+
+        return;
+    }
+
+    // 남은 info의 첫번째만 뽑아서 
+    const nextRemainInfos = [...remainInfos];
+    const info = nextRemainInfos.shift(); 
+    mapSetting({ map, remainInfos: nextRemainInfos, keyInfo: [...keyInfo, info], score })
+    if (info !== "-") {
+        mapSetting({ map, remainInfos: nextRemainInfos, keyInfo: [...keyInfo, "-"], score })
+    }
 }
 
-function mapSetting(map, infoList) {
-    for (const info of infoList) {
-        const score = info[4];
+function getTargetScoreIndex(scores, target) {
+    let start = 0;
+    let end = scores.length;
+    let mid = 0;
 
-        let key = makeKey(info);
-        const value = Number(score);
-
-        addScore(map, key, value);
-
-        // 상관없음(-) 조건에도 점수를 넣어줌
-        for (let i = 0 ; i < info.length - 1 ; ++i) {
-            if (info[i] === "-") {
-                continue;
-            }
-
-            const tmpInfo = [...info];
-            tmpInfo[i] = "-";
-            key = makeKey(tmpInfo);
-            addScore(map, key, value);
+    while(start < end) {
+        mid = Math.floor((start + end) / 2);
+        
+        if (scores[mid] >= target) {
+            end = mid;
+        } else if (scores[mid] < target) {
+            start = mid + 1;
         }
     }
 
-    map.forEach((value, key) => {
-        map.set(key, [...value].sort((a,b) => a - b));
-    })
+    return end;
 }
 
 function solution(info, query) {
@@ -73,15 +78,26 @@ function solution(info, query) {
     const queryList = getQueryList(query);
 
     const map = new Map();
-    mapSetting(map, infoList);
+    for (const info of infoList) {
+        const score = info[4];
+        const remainInfos = info.slice(0,4);
+
+        mapSetting({map, remainInfos, keyInfo: [], score});
+    }
+
+    map.forEach((value, key) => {
+        map.set(key, [...value].sort((a,b) => a - b));
+    })
 
     for (const query of queryList) {
-        let count = 0
         const queryScore = query[4];
         const key = makeKey(query);
 
-        const infoScores = map.get(key);
-
+        let count = 0
+        if (map.has(key)) {
+            const infoScores = map.get(key);
+            count = infoScores.length - getTargetScoreIndex(infoScores, queryScore);
+        }
 
         answer.push(count);
     }
